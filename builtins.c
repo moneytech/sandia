@@ -2,17 +2,17 @@
 #include "builtins.h"
 
 #define X(name, op) int builtin_##name (Atom args, Atom *result) {  \
-    Atom a, b;\
-    if (nilp(args) || nilp(cdr(args)) || !nilp(cdr(cdr(args)))) {\
-        return Error_args;\
-    }\
-    a = car(args);\
-    b = car(cdr(args));\
-    if (a.type != Atype_int || b.type != Atype_int) {\
-        return Error_type;\
-    }\
-    *result = make_int(a.value.integer op b.value.integer);\
-    return Error_ok;\
+    Atom a, b; \
+    if (nilp(args) || nilp(cdr(args)) || !nilp(cdr(cdr(args)))) { \
+        return Error_args; \
+    } \
+    a = car(args); \
+    b = car(cdr(args)); \
+    if (a.type != Atype_int || b.type != Atype_int) { \
+        return Error_type; \
+    } \
+    *result = make_int(a.value.integer op b.value.integer); \
+    return Error_ok; \
 }
 
 builtin_binop_list
