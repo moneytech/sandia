@@ -6,14 +6,11 @@
 #include <readline/history.h>
 
 #include "basics.h"
+#include "file.h"
 #include "builtins.h"
 #include "env.h"
 
-int eval_expr (Atom expr, Atom env, Atom *result);
-int lex (const char *str, const char **start, const char **end);
-int parse_simple (const char *start, const char *end, Atom *result);
-int read_expr (const char *input, const char **end, Atom *result);
-int read_list (const char *start, const char **end, Atom *result);
+#include "eval.h"
 
 Atom copy_list (Atom list) {
     Atom a, p;
@@ -335,6 +332,7 @@ int read_list (const char *start, const char **end, Atom *result) {
 
 int main () {
     Atom env = env_create(nil);
+    load_file(env, "stdlib.sandia");
 
 #define X(name, op) env_set(env, make_sym(#op), make_builtin(builtin_##name));
     builtin_list

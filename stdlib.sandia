@@ -1,0 +1,4 @@
+(defun (caar ls) (car (car ls)))
+(defun (cadr ls) (car (cdr ls)))
+(defun (cdar ls) (cdr (car ls)))
+(defun (cddr ls) (cdr (cdr ls)))
