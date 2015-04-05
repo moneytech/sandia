@@ -14,7 +14,6 @@ int lex (const char *str, const char **start, const char **end);
 int parse_simple (const char *start, const char *end, Atom *result);
 int read_expr (const char *input, const char **end, Atom *result);
 int read_list (const char *start, const char **end, Atom *result);
-void print_expr (Atom atom);
 
 Atom copy_list (Atom list) {
     Atom a, p;
@@ -192,46 +191,6 @@ Atom make_builtin (Builtin fn) {
     return a;
 }
 
-void print_expr (Atom atom) {
-    switch (atom.type) {
-        case Atype_nil:
-            printf("NIL");
-            break;
-        case Atype_pair:
-            putchar('(');
-            print_expr(car(atom));
-            atom = cdr(atom);
-            while (!nilp(atom)) {
-                if (atom.type == Atype_pair) {
-                    putchar(' ');
-                    print_expr(car(atom));
-                    atom = cdr(atom);
-                } else {
-                    printf(" . ");
-                    print_expr(atom);
-                    break;
-                }
-            }
-            putchar(')');
-            break;
-        case Atype_symbol:
-            printf("%s", atom.value.symbol);
-            break;
-        case Atype_int:
-            printf("%ld", atom.value.integer);
-            break;
-        case Atype_builtin:
-            printf("#<BUILTIN:%p>", atom.value.builtin);
-            break;
-        case Atype_closure:
-            print_expr(cons(make_sym("LAMBDA"), cdr(atom)));
-            break;
-        default:
-            printf("UNKNOWN");
-            break;
-    }
-}
-
 int lex (const char *str, const char **start, const char **end) {
     const char *ws = " \t\n";
     const char *delim = "() \t\n";
@@ -391,24 +350,7 @@ int main () {
         if (!err)
             err = eval_expr(expr, env, &result);
 
-        switch (err) {
-            case Error_ok:
-                print_expr(result);
-                putchar('\n');
-                break;
-            case Error_syntax:
-                puts("Syntax error");
-                break;
-            case Error_unbound:
-                puts("Symbol not bound");
-                break;
-            case Error_args:
-                puts("Wrong number of arguments");
-                break;
-            case Error_type:
-                puts("Wrong type");
-                break;
-        }
+        print_err(err, result);
 
         free(input);
     }

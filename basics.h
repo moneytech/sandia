@@ -44,6 +44,9 @@ typedef enum {
 } Error;
 
 void error (const char *msg);
+void print_err (Error e, Atom result);
+void print_expr (Atom atom);
+
 int listp (Atom expr);
 Atom cons (Atom car_val, Atom cdr_val);
 Atom make_int (long x);
