@@ -31,6 +31,12 @@ typedef struct Atom Atom;
 
 #define car(p) ((p).value.pair->atom[0])
 #define cdr(p) ((p).value.pair->atom[1])
+
+#define caar(p) (car(car((p))))
+#define cadr(p) (car(cdr((p))))
+#define cdar(p) (cdr(car((p))))
+#define cddr(p) (cdr(cdr((p))))
+
 #define nilp(atom) ((atom).type == Atype_nil)
 
 static const Atom nil = { Atype_nil };
