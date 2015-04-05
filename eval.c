@@ -372,14 +372,6 @@ int read_list (const char *start, const char **end, Atom *result) {
 }
 
 int main () {
-    /* print_expr(make_int(42)); */
-    /* putchar('\n'); */
-    /* print_expr(make_sym("X")); */
-    /* putchar('\n'); */
-    /* print_expr(cons(make_sym("A"), make_sym("B"))); */
-    /* putchar('\n'); */
-    /* printf("%d\n", make_sym("hello").value.symbol == make_sym("hello").value.symbol); */
-
     Atom env = env_create(nil);
 
 #define X(name, op) env_set(env, make_sym(#op), make_builtin(builtin_##name));
