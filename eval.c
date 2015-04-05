@@ -223,6 +223,9 @@ void print_expr (Atom atom) {
         case Atype_builtin:
             printf("#<BUILTIN:%p>", atom.value.builtin);
             break;
+        case Atype_closure:
+            print_expr(cons(make_sym("LAMBDA"), cdr(atom)));
+            break;
         default:
             printf("UNKNOWN");
             break;
@@ -378,7 +381,7 @@ int main () {
     builtin_list
 #undef X
 
-        char *input;
+    char *input;
     while ((input = readline("> ")) != NULL) {
         const char *p = input;
         Error err;
