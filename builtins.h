@@ -8,17 +8,13 @@
   X(div, /)
 
 #define builtin_list \
-  X(car, CAR)     \
-  X(cdr, CDR)     \
-  X(cons, CONS)   \
+  X(car, CAR)   \
+  X(cdr, CDR)   \
+  X(cons, CONS) \
   builtin_binop_list
 
-int builtin_car (Atom args, Atom *result);
-int builtin_cdr (Atom args, Atom *result);
-int builtin_cons (Atom args, Atom *result);
-
 #define X(name, op) int builtin_##name (Atom args, Atom *result);
-builtin_binop_list
+builtin_list
 #undef X
 
 #endif

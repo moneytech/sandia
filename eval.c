@@ -14,7 +14,7 @@ int lex (const char *str, const char **start, const char **end);
 int parse_simple (const char *start, const char *end, Atom *result);
 int read_expr (const char *input, const char **end, Atom *result);
 int read_list (const char *start, const char **end, Atom *result);
-void print_expr(Atom atom);
+void print_expr (Atom atom);
 
 Atom copy_list (Atom list) {
     Atom a, p;
@@ -114,6 +114,10 @@ int eval_expr (Atom expr, Atom env, Atom *result) {
 
             return make_closure(env, car(args), cdr(args), result);
         }
+        else if (symis("ENV")) {
+          *result = env;
+          return Error_ok;
+        }
         else if (symis("DEFUN")) {
             Atom fun_name = car(car(args));
             Atom fun_args = cdr(car(args));
@@ -131,9 +135,6 @@ int eval_expr (Atom expr, Atom env, Atom *result) {
             if (err) {
                 return err;
             }
-
-            print_expr(sugar_res);
-            putchar('\n');
 
             env_set(env, fun_name, sugar_res);
             *result = fun_name;
@@ -191,8 +192,7 @@ Atom make_builtin (Builtin fn) {
     return a;
 }
 
-void print_expr(Atom atom)
-{
+void print_expr (Atom atom) {
     switch (atom.type) {
         case Atype_nil:
             printf("NIL");
@@ -383,9 +383,6 @@ int main () {
     Atom env = env_create(nil);
 
 #define X(name, op) env_set(env, make_sym(#op), make_builtin(builtin_##name));
-    /* env_set(env, make_sym("CAR"), make_builtin(builtin_car)); */
-    /* env_set(env, make_sym("CDR"), make_builtin(builtin_cdr)); */
-    /* env_set(env, make_sym("CONS"), make_builtin(builtin_cons)); */
     builtin_list
 #undef X
 
