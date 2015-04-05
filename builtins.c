@@ -1,7 +1,7 @@
 #include "basics.h"
 #include "builtins.h"
 
-#define X(name, op) int builtin_##name (Atom args, Atom *result) {  \
+#define X(name, op) int builtin_##name (Atom args, Atom *result) { \
     Atom a, b; \
     if (nilp(args) || nilp(cdr(args)) || !nilp(cdr(cdr(args)))) { \
         return Error_args; \
